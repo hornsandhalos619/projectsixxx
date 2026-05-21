@@ -1,0 +1,192 @@
+{
+  "skills": {
+    "load": {
+      "watch": true,
+      "watchDebounceMs": 250,
+      "extraDirs": []
+    },
+    "entries": {
+      "decision-memory": {
+        "enabled": true
+      },
+      "launch-orchestrator": {
+        "enabled": true
+      },
+      "market-research-art-merch": {
+        "enabled": true
+      },
+      "brand-naming-positioning": {
+        "enabled": true
+      },
+      "moodboard-creative-direction": {
+        "enabled": true
+      },
+      "product-roadmap-merch": {
+        "enabled": true
+      },
+      "pricing-margin-model": {
+        "enabled": true
+      },
+      "shopify-launch-ops": {
+        "enabled": true
+      },
+      "content-calendar-builder": {
+        "enabled": true
+      },
+      "paid-social-creative-lab": {
+        "enabled": true
+      },
+      "spreadshop-marketplace-ops": {
+        "enabled": true
+      },
+      "threadless-marketplace-ops": {
+        "enabled": true
+      },
+      "marketplace-portfolio-strategy": {
+        "enabled": true
+      },
+      "creator-partnerships": {
+        "enabled": true
+      },
+      "email-sms-funnel-builder": {
+        "enabled": true
+      },
+      "finance-kpi-forecast": {
+        "enabled": true
+      },
+      "weekly-exec-review": {
+        "enabled": true
+      },
+      "executive-security-governance": {
+        "enabled": true
+      },
+      "founder-control-legal-protection": {
+        "enabled": true
+      },
+      "investor-readiness": {
+        "enabled": true
+      },
+      "investor-sourcing-outreach": {
+        "enabled": true
+      }
+    }
+  },
+  "agents": {
+    "defaults": {
+      "workspace": ".",
+      "skills": []
+    },
+    "list": [
+      {
+        "id": "cso",
+        "description": "Chief Strategy Orchestrator for the Horns and Halos business",
+        "identity": ".openclaw/agents/cso/agent.md",
+        "workspace": ".",
+        "skills": [
+          "decision-memory",
+          "launch-orchestrator",
+          "weekly-exec-review",
+          "marketplace-portfolio-strategy",
+          "investor-readiness",
+          "investor-sourcing-outreach"
+        ]
+      },
+      {
+        "id": "market-intel",
+        "description": "Market intelligence and competitor analysis specialist",
+        "identity": ".openclaw/agents/market-intel/agent.md",
+        "workspace": ".",
+        "skills": [
+          "decision-memory",
+          "market-research-art-merch"
+        ]
+      },
+      {
+        "id": "brand",
+        "description": "Brand strategy, naming, and creative direction specialist",
+        "identity": ".openclaw/agents/brand/agent.md",
+        "workspace": ".",
+        "skills": [
+          "decision-memory",
+          "brand-naming-positioning",
+          "moodboard-creative-direction"
+        ]
+      },
+      {
+        "id": "product",
+        "description": "Merchandise roadmap and margin planning specialist",
+        "identity": ".openclaw/agents/product/agent.md",
+        "workspace": ".",
+        "skills": [
+          "decision-memory",
+          "product-roadmap-merch",
+          "pricing-margin-model"
+        ]
+      },
+      {
+        "id": "growth",
+        "description": "Growth, paid ads, content, creator, and funnel specialist",
+        "identity": ".openclaw/agents/growth/agent.md",
+        "workspace": ".",
+        "skills": [
+          "decision-memory",
+          "content-calendar-builder",
+          "paid-social-creative-lab",
+          "creator-partnerships",
+          "email-sms-funnel-builder"
+        ]
+      },
+      {
+        "id": "ops",
+        "description": "Shopify operations and launch systems specialist",
+        "identity": ".openclaw/agents/ops/agent.md",
+        "workspace": ".",
+        "skills": [
+          "decision-memory",
+          "shopify-launch-ops",
+          "spreadshop-marketplace-ops",
+          "threadless-marketplace-ops",
+          "marketplace-portfolio-strategy"
+        ]
+      },
+      {
+        "id": "finance",
+        "description": "Forecasting, KPI, and executive reporting specialist",
+        "identity": ".openclaw/agents/finance/agent.md",
+        "workspace": ".",
+        "skills": [
+          "decision-memory",
+          "finance-kpi-forecast",
+          "weekly-exec-review",
+          "investor-readiness"
+        ]
+      },
+      {
+        "id": "exec-guard",
+        "description": "Executive security and governance specialist",
+        "identity": ".openclaw/agents/exec-guard/agent.md",
+        "workspace": ".",
+        "skills": [
+          "decision-memory",
+          "executive-security-governance",
+          "founder-control-legal-protection"
+        ]
+      }
+    ]
+  },
+  "security": {
+    "founderControlledAssets": [
+      "domain",
+      "dns",
+      "payment",
+      "banking",
+      "trademark",
+      "accountOwnership"
+    ],
+    "workspaceBoundary": "each agent may only write within its own folder",
+    "brandAuditorMode": "read-only",
+    "gatekeeperExecPolicy": "deny-by-default unless approved security workflow",
+    "architectWriteScope": "own-folder-only",
+    "growthWriteScope": "own-folder-only"
+  }
+}
