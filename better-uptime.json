@@ -1,0 +1,122 @@
+{
+  "monitors": [
+    {
+      "name": "Projectsixxx.com - Homepage",
+      "url": "https://projectsixxx.com",
+      "type": "https",
+      "interval": 60,
+      "timeout": 30,
+      "retries": 3,
+      "regions": ["us-east-1", "us-west-2", "eu-west-1", "ap-southeast-1"],
+      "alertContacts": ["ops@projectsixxx.com"],
+      "alertThresholds": {
+        "downtime": 1,
+        "degraded": 3
+      },
+      "expectedStatusCodes": [200],
+      "headers": {
+        "User-Agent": "BetterUptime/1.0"
+      }
+    },
+    {
+      "name": "Projectsixxx.com - API Health",
+      "url": "https://projectsixxx.com/api/health",
+      "type": "https",
+      "interval": 60,
+      "timeout": 10,
+      "retries": 2,
+      "regions": ["us-east-1", "eu-west-1"],
+      "alertContacts": ["ops@projectsixxx.com"],
+      "alertThresholds": {
+        "downtime": 1,
+        "degraded": 2
+      },
+      "expectedStatusCodes": [200],
+      "keyword": "healthy"
+    },
+    {
+      "name": "Projectsixxx.com - Shop",
+      "url": "https://projectsixxx.com/shop",
+      "type": "https",
+      "interval": 120,
+      "timeout": 30,
+      "retries": 3,
+      "regions": ["us-east-1", "eu-west-1"],
+      "alertContacts": ["ops@projectsixxx.com"],
+      "alertThresholds": {
+        "downtime": 2,
+        "degraded": 5
+      },
+      "expectedStatusCodes": [200]
+    },
+    {
+      "name": "Projectsixxx.com - Services",
+      "url": "https://projectsixxx.com/services",
+      "type": "https",
+      "interval": 120,
+      "timeout": 30,
+      "retries": 3,
+      "regions": ["us-east-1", "eu-west-1"],
+      "alertContacts": ["ops@projectsixxx.com"],
+      "alertThresholds": {
+        "downtime": 2,
+        "degraded": 5
+      },
+      "expectedStatusCodes": [200]
+    },
+    {
+      "name": "Projectsixxx.com - Contact Forms",
+      "url": "https://projectsixxx.com/contact",
+      "type": "https",
+      "interval": 120,
+      "timeout": 30,
+      "retries": 3,
+      "regions": ["us-east-1", "eu-west-1"],
+      "alertContacts": ["ops@projectsixxx.com"],
+      "alertThresholds": {
+        "downtime": 2,
+        "degraded": 5
+      },
+      "expectedStatusCodes": [200]
+    }
+  ],
+  "incidentRules": [
+    {
+      "name": "Critical - Site Down",
+      "condition": "downtime > 1 minute",
+      "severity": "critical",
+      "notify": ["ops@projectsixxx.com", "oncall@projectsixxx.com"],
+      "escalation": {
+        "afterMinutes": 5,
+        "notify": ["cto@projectsixxx.com"]
+      }
+    },
+    {
+      "name": "Warning - Degraded Performance",
+      "condition": "response_time > 3000ms",
+      "severity": "warning",
+      "notify": ["ops@projectsixxx.com"]
+    },
+    {
+      "name": "Warning - Error Rate Spike",
+      "condition": "error_rate > 1%",
+      "severity": "warning",
+      "notify": ["ops@projectsixxx.com", "dev@projectsixxx.com"]
+    }
+  ],
+  "statusPage": {
+    "enabled": true,
+    "subdomain": "status.projectsixxx.com",
+    "customDomain": "status.projectsixxx.com",
+    "components": [
+      { "name": "Website", "description": "Main website and all pages" },
+      { "name": "Shop", "description": "E-commerce functionality" },
+      { "name": "Services", "description": "Service booking and inquiries" },
+      { "name": "Gallery", "description": "Art gallery and commissions" },
+      { "name": "API", "description": "Backend APIs and integrations" },
+      { "name": "Database", "description": "PostgreSQL database" },
+      { "name": "CMS", "description": "Sanity content management" },
+      { "name": "Email", "description": "Transactional emails (Resend)" }
+    ]
+  }
+}

@@ -1,0 +1,576 @@
+// Prisma Schema for Projectsixxx.com — Gothic Luxury Digital Empire
+// Horns & Halos Brand
+// Run: npx prisma generate && npx prisma db push
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("POSTGRES_PRISMA_URL") // or POSTGRES_URL_NON_POOLING for migrations
+  directUrl = env("POSTGRES_URL_NON_POOLING")
+}
+
+// =============================================================================
+// ENUMS
+// =============================================================================
+
+enum UserRole {
+  GUEST
+  ACOLYTE      // Free tier
+  ADEPT        // Paid subscriber
+  ARCHMAGE     // VIP / Lifetime
+  COVEN        // Staff / Admin
+  ORACLE       // Super admin
+}
+
+enum OrderStatus {
+  PENDING
+  CONFIRMED
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  REFUNDED
+  FAILED
+}
+
+enum PaymentStatus {
+  PENDING
+  AUTHORIZED
+  CAPTURED
+  REFUNDED
+  FAILED
+  PARTIAL_REFUND
+}
+
+enum ServiceTier {
+  ACOLYTE
+  ADEPT
+  ARCHMAGE
+  CUSTOM
+}
+
+enum CommissionStatus {
+  INQUIRY
+  QUOTED
+  CONTRACTED
+  IN_PROGRESS
+  REVIEW
+  REVISION
+  COMPLETED
+  DELIVERED
+  CANCELLED
+}
+
+enum GalleryCategory {
+  DIGITAL
+  PHOTOGRAPHY
+  GENERATIVE
+  COMMISSIONS
+  PRINTS
+}
+
+enum JournalType {
+  ESSAY
+  RITUAL
+  CONFESSION
+  SUMMONING
+  BOARD_THREAD
+  BOARD_REPLY
+}
+
+// =============================================================================
+// CORE MODELS
+// =============================================================================
+
+model User {
+  id            String    @id @default(cuid())
+  email         String    @unique
+  emailVerified DateTime?
+  name          String?
+  username      String?   @unique
+  image         String?
+  bio           String?   @db.Text
+  role          UserRole  @default(ACOLYTE)
+  bloodOathTier String?   // "Blood Oath" loyalty tier
+  referralCode  String?   @unique
+  referredBy    String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts      Account[]
+  sessions      Session[]
+  orders        Order[]
+  commissions   Commission[]
+  leads         Lead[]
+  newsletter    NewsletterSubscription?
+  addresses     Address[]
+  wishlist      WishlistItem[]
+  galleryWorks  GalleryWork[] @relation("ArtistWorks")
+  journalPosts  JournalPost[] @relation("AuthorPosts")
+  boardPosts    JournalPost[] @relation("AuthorBoardPosts")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// =============================================================================
+// NEWSLETTER
+// =============================================================================
+
+model NewsletterSubscription {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  userId    String?  @unique
+  confirmed Boolean  @default(false)
+  token     String?  @unique // For double opt-in
+  source    String?  // "altar", "bazaar", "sanctum", "scriptorium", "confessional"
+  tags      String[] @default([])
+  createdAt DateTime @default(now())
+  confirmedAt DateTime?
+  unsubscribedAt DateTime?
+
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+}
+
+// =============================================================================
+// ADDRESSES
+// =============================================================================
+
+model Address {
+  id        String   @id @default(cuid())
+  userId    String
+  name      String
+  line1     String
+  line2     String?
+  city      String
+  state     String
+  postalCode String
+  country   String   @default("US")
+  phone     String?
+  isDefault Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// =============================================================================
+// SHOP / ORDERS
+// =============================================================================
+
+model Product {
+  id          String   @id @default(cuid())
+  handle      String   @unique
+  title       String
+  description String   @db.Text
+  vendor      String   // "HNH", "Spreadshirt", "Threadless", "Etsy", "Affiliate"
+  productType String
+  tags        String[]
+  source      String   // "shopify", "spreadshirt", "threadless", "etsy", "affiliate"
+  sourceId    String   // External platform product ID
+  sourceUrl   String?
+  images      String[]
+  featuredImage String?
+  price       Decimal  @db.Decimal(10, 2)
+  compareAtPrice Decimal? @db.Decimal(10, 2)
+  currency    String   @default("USD")
+  inventory   Int      @default(0)
+  trackInventory Boolean @default(true)
+  isActive    Boolean  @default(true)
+  isFeatured  Boolean  @default(false)
+  bloodType   String?  // "bestseller", "new", "sale", "limited"
+  metadata    Json?    // Platform-specific data
+  seoTitle    String?
+  seoDescription String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  variants    ProductVariant[]
+  orderItems  OrderItem[]
+  wishlistItems WishlistItem[]
+}
+
+model ProductVariant {
+  id        String   @id @default(cuid())
+  productId String
+  title     String   // e.g., "Black / XL"
+  sku       String?  @unique
+  price     Decimal  @db.Decimal(10, 2)
+  compareAtPrice Decimal? @db.Decimal(10, 2)
+  inventory Int      @default(0)
+  weight    Decimal? @db.Decimal(8, 2)
+  weightUnit String  @default("g")
+  option1   String?  // Color
+  option2   String?  // Size
+  option3   String?
+  image     String?
+  position  Int      @default(0)
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  orderItems OrderItem[]
+}
+
+model Order {
+  id              String       @id @default(cuid())
+  orderNumber     String       @unique // Human-readable: HNX-2024-XXXX
+  userId          String?
+  email           String
+  status          OrderStatus  @default(PENDING)
+  paymentStatus   PaymentStatus @default(PENDING)
+  subtotal        Decimal      @db.Decimal(10, 2)
+  tax             Decimal      @db.Decimal(10, 2) @default(0)
+  shipping        Decimal      @db.Decimal(10, 2) @default(0)
+  discount        Decimal      @db.Decimal(10, 2) @default(0)
+  total           Decimal      @db.Decimal(10, 2)
+  currency        String       @default("USD")
+  notes           String?      @db.Text
+  shippingAddress Json?
+  billingAddress  Json?
+  trackingNumber  String?
+  trackingUrl     String?
+  shippedAt       DateTime?
+  deliveredAt     DateTime?
+  cancelledAt     DateTime?
+  refundedAt      DateTime?
+  metadata        Json?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+
+  user        User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+  items       OrderItem[]
+  payments    Payment[]
+}
+
+model OrderItem {
+  id         String  @id @default(cuid())
+  orderId    String
+  productId  String
+  variantId  String?
+  quantity   Int
+  price      Decimal @db.Decimal(10, 2) // Price at time of order
+  total      Decimal @db.Decimal(10, 2)
+  title      String  // Snapshot
+  variantTitle String?
+  image      String?
+  vendor     String?
+  metadata   Json?
+
+  order      Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product    Product @relation(fields: [productId], references: [id], onDelete: Restrict)
+  variant    ProductVariant? @relation(fields: [variantId], references: [id], onDelete: SetNull)
+}
+
+model Payment {
+  id            String   @id @default(cuid())
+  orderId       String
+  amount        Decimal  @db.Decimal(10, 2)
+  currency      String   @default("USD")
+  status        PaymentStatus @default(PENDING)
+  provider      String   // "stripe", "shopify", "paypal"
+  providerId    String?  // External payment ID
+  providerData  Json?
+  capturedAt    DateTime?
+  refundedAt    DateTime?
+  refundAmount  Decimal? @db.Decimal(10, 2)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+}
+
+// =============================================================================
+// SERVICES / LEADS
+// =============================================================================
+
+model Service {
+  id          String   @id @default(cuid())
+  handle      String   @unique
+  title       String
+  shortDesc   String
+  description String   @db.Text
+  icon        String   // Lucide icon name or emoji
+  category    String   // "formation", "business-model", "digital-production", etc.
+  tierPricing Json     // { acolyte: 497, adept: 1497, archmage: 3997 }
+  features    Json     // Array of features per tier
+  process     Json     // 4-step ritual process
+  caseStudies Json?    // Array of case studies
+  faq         Json?    // Array of FAQ
+  leadMagnet  String?  // Title of lead magnet
+  leadMagnetUrl String?
+  calendlyUrl String?
+  isActive    Boolean  @default(true)
+  isFeatured  Boolean  @default(false)
+  sortOrder   Int      @default(0)
+  seoTitle    String?
+  seoDescription String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  leads Lead[]
+}
+
+model Lead {
+  id          String   @id @default(cuid())
+  serviceId   String?
+  userId      String?
+  email       String
+  name        String
+  company     String?
+  phone       String?
+  message     String   @db.Text
+  budget      String?  // Budget range
+  timeline    String?  // Desired timeline
+  source      String   // "services", "collab", "press", "general"
+  status      String   @default("new") // new, contacted, qualified, proposal, won, lost
+  score       Int      @default(0) // Lead score
+  assignedTo  String?  // Team member
+  metadata    Json?    // Form-specific data
+  utmSource   String?
+  utmMedium   String?
+  utmCampaign String?
+  utmContent  String?
+  utmTerm     String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  contactedAt DateTime?
+  convertedAt DateTime?
+
+  service Service? @relation(fields: [serviceId], references: [id], onDelete: SetNull)
+  user User? @relation(fields: [userId], references: [id], onDelete: SetNull)
+}
+
+// =============================================================================
+// COMMISSIONS
+// =============================================================================
+
+model Commission {
+  id            String           @id @default(cuid())
+  commissionNumber String        @unique // HNX-COM-XXXX
+  userId        String
+  artistId      String?
+  title         String
+  description   String           @db.Text
+  brief         String           @db.Text // Client's brief
+  category      GalleryCategory
+  status        CommissionStatus @default(INQUIRY)
+  tier          ServiceTier      @default(ACOLYTE)
+  quotedPrice   Decimal?         @db.Decimal(10, 2)
+  agreedPrice   Decimal?         @db.Decimal(10, 2)
+  depositPaid   Decimal          @db.Decimal(10, 2) @default(0)
+  balanceDue    Decimal          @db.Decimal(10, 2) @default(0)
+  currency      String           @default("USD")
+  references    String[]         @default([]) // Image URLs
+  deliverables  String[]         @default([])
+  timeline      String?
+  contractUrl   String?
+  metadata      Json?
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  quotedAt      DateTime?
+  contractedAt  DateTime?
+  startedAt     DateTime?
+  completedAt   DateTime?
+  deliveredAt   DateTime?
+
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  artist User?  @relation("ArtistCommissions", fields: [artistId], references: [id], onDelete: SetNull)
+  updates CommissionUpdate[]
+  payments Payment[] @relation("CommissionPayments")
+}
+
+model CommissionUpdate {
+  id            String   @id @default(cuid())
+  commissionId  String
+  title         String
+  description   String   @db.Text
+  images        String[] @default([])
+  isClientVisible Boolean @default(true)
+  createdAt     DateTime @default(now())
+
+  commission Commission @relation(fields: [commissionId], references: [id], onDelete: Cascade)
+}
+
+// =============================================================================
+// GALLERY
+// =============================================================================
+
+model GalleryWork {
+  id          String         @id @default(cuid())
+  handle      String         @unique
+  title       String
+  description String?        @db.Text
+  artistId    String
+  category    GalleryCategory
+  images      String[]       // Multiple images for lightbox
+  thumbnail   String
+  tags        String[]
+  isForSale   Boolean        @default(false)
+  printPrice  Decimal?       @db.Decimal(10, 2)
+  originalPrice Decimal?     @db.Decimal(10, 2)
+  isNft       Boolean        @default(false)
+  nftContract String?
+  nftTokenId  String?
+  nftChain    String?
+  views       Int            @default(0)
+  likes       Int            @default(0)
+  isFeatured  Boolean        @default(false)
+  isPublished Boolean        @default(true)
+  publishedAt DateTime?
+  metadata    Json?
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  artist User @relation("ArtistWorks", fields: [artistId], references: [id], onDelete: Cascade)
+  likes_rel GalleryLike[]
+}
+
+model GalleryLike {
+  id        String   @id @default(cuid())
+  workId    String
+  userId    String
+  createdAt DateTime @default(now())
+
+  work GalleryWork @relation(fields: [workId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([workId, userId])
+}
+
+// =============================================================================
+// JOURNAL / BLOG
+// =============================================================================
+
+model JournalPost {
+  id          String      @id @default(cuid())
+  handle      String      @unique
+  title       String
+  excerpt     String?
+  content     String      @db.Text // MDX content
+  type        JournalType @default(ESSAY)
+  category    String?
+  tags        String[]
+  authorId    String
+  featuredImage String?
+  seoTitle    String?
+  seoDescription String?
+  readingTime Int?        // Minutes
+  views       Int         @default(0)
+  likes       Int         @default(0)
+  isPublished Boolean     @default(false)
+  isFeatured  Boolean     @default(false)
+  publishedAt DateTime?
+  metadata    Json?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+
+  author      User       @relation("AuthorPosts", fields: [authorId], references: [id], onDelete: Cascade)
+  likes_rel   JournalLike[]
+  comments    JournalComment[]
+}
+
+model JournalLike {
+  id        String   @id @default(cuid())
+  postId    String
+  userId    String
+  createdAt DateTime @default(now())
+
+  post JournalPost @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([postId, userId])
+}
+
+model JournalComment {
+  id        String   @id @default(cuid())
+  postId    String
+  userId    String?
+  authorName String? // For guest comments
+  authorEmail String?
+  content   String   @db.Text
+  parentId  String?
+  isApproved Boolean @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  post   JournalPost    @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user   User?          @relation("BoardPosts", fields: [userId], references: [id], onDelete: SetNull)
+  parent JournalComment? @relation("CommentReplies", fields: [parentId], references: [id], onDelete: Cascade)
+  replies JournalComment[] @relation("CommentReplies")
+}
+
+// =============================================================================
+// WISHLIST
+// =============================================================================
+
+model WishlistItem {
+  id        String   @id @default(cuid())
+  userId    String
+  productId String
+  variantId String?
+  createdAt DateTime @default(now())
+
+  user    User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  variant ProductVariant? @relation(fields: [variantId], references: [id], onDelete: SetNull)
+
+  @@unique([userId, productId, variantId])
+}
+
+// =============================================================================
+// ANALYTICS / EVENTS
+// =============================================================================
+
+model AnalyticsEvent {
+  id        String   @id @default(cuid())
+  event     String
+  userId    String?
+  sessionId String?
+  properties Json?
+  page      String?
+  referrer  String?
+  userAgent String?
+  ip        String?
+  createdAt DateTime @default(now())
+
+  @@index([event, createdAt])
+  @@index([userId, createdAt])
+  @@index([sessionId, createdAt])
+}

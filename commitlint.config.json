@@ -1,0 +1,90 @@
+{
+  "extends": ["@commitlint/config-conventional"],
+  "rules": {
+    "type-enum": [
+      2,
+      "always",
+      [
+        "feat",
+        "fix",
+        "docs",
+        "style",
+        "refactor",
+        "perf",
+        "test",
+        "chore",
+        "build",
+        "ci",
+        "revert"
+      ]
+    ],
+    "type-case": [2, "always", "lower-case"],
+    "type-empty": [2, "never"],
+    "scope-case": [2, "always", "lower-case"],
+    "subject-case": [2, "always", "sentence-case"],
+    "subject-empty": [2, "never"],
+    "subject-full-stop": [2, "never", "."],
+    "header-max-length": [2, "always", 100],
+    "body-leading-blank": [1, "always"],
+    "footer-leading-blank": [1, "always"]
+  },
+  "prompt": {
+    "messages": {
+      "type": "Select the type of change that you're committing:",
+      "scope": "Denote the SCOPE of this change (optional):",
+      "customScope": "Denote the SCOPE of this change:",
+      "subject": "Write a SHORT, IMPERATIVE tense description of the change:\n",
+      "body": "Provide a LONGER description of the change (optional). Use \"|\" to break new line:\n",
+      "breaking": "List any BREAKING CHANGES (optional). Use \"|\" to break new line:\n",
+      "footerPrefixesSelect": "Select the ISSUES this change closes (optional). Use \"|\" to break new line:\n",
+      "customFooterPrefixes": "Input ISSUES this change closes (optional). Use \"|\" to break new line:\n",
+      "confirmCommit": "Are you sure you want to proceed with the commit above?"
+    },
+    "types": [
+      { "value": "feat", "name": "feat:     \u2728  A new feature", "emoji": "\u2728" },
+      { "value": "fix", "name": "fix:      \uD83D\uDC1B  A bug fix", "emoji": "\uD83D\uDC1B" },
+      { "value": "docs", "name": "docs:     \uD83D\uDCDD  Documentation only changes", "emoji": "\uD83D\uDCDD" },
+      { "value": "style", "name": "style:    \uD83D\uDC84  Changes that do not affect the meaning of the code", "emoji": "\uD83D\uDC84" },
+      { "value": "refactor", "name": "refactor: \u267B\uFE0F   A code change that neither fixes a bug nor adds a feature", "emoji": "\u267B\uFE0F" },
+      { "value": "perf", "name": "perf:     \u26A1\uFE0F  A code change that improves performance", "emoji": "\u26A1\uFE0F" },
+      { "value": "test", "name": "test:     \u2705  Adding missing tests or correcting existing tests", "emoji": "\u2705" },
+      { "value": "chore", "name": "chore:    \uD83D\uDD27  Changes to the build process or auxiliary tools", "emoji": "\uD83D\uDD27" },
+      { "value": "build", "name": "build:    \uD83D\uDCE6  Changes that affect the build system or external dependencies", "emoji": "\uD83D\uDCE6" },
+      { "value": "ci", "name": "ci:       \uD83E\uDD16  Changes to our CI configuration files and scripts", "emoji": "\uD83E\uDD16" },
+      { "value": "revert", "name": "revert:   \u23EA\uFE0F  Reverts a previous commit", "emoji": "\u23EA\uFE0F" }
+    ],
+    "useEmoji": true,
+    "themeColorCode": "\u001b[31m",
+    "scopes": [
+      "ui",
+      "api",
+      "shop",
+      "services",
+      "gallery",
+      "journal",
+      "contact",
+      "account",
+      "auth",
+      "db",
+      "cms",
+      "monitoring",
+      "ci",
+      "deps",
+      "config",
+      "types",
+      "utils",
+      "hooks",
+      "components",
+      "pages",
+      "styles",
+      "fonts",
+      "images",
+      "seo",
+      "a11y",
+      "i18n"
+    ],
+    "allowCustomScopes": true,
+    "allowBreakingChanges": ["feat", "fix"],
+    "skipQuestions": ["body", "footer"]
+  }
+}

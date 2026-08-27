@@ -1,0 +1,99 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    ":dependencyDashboard",
+    ":semanticCommits",
+    ":prConcurrentLimit10",
+    ":prHourlyLimit2",
+    ":automergePatch",
+    ":automergeMinor",
+    ":label(renovate)",
+    ":label(dependencies)"
+  ],
+  "timezone": "America/Los_Angeles",
+  "schedule": ["every weekend"],
+  "labels": ["renovate", "dependencies"],
+  "commitMessagePrefix": "chore(deps)",
+  "commitMessageTopic": "{{depName}}",
+  "commitMessageAction": "update",
+  "branchPrefix": "renovate/",
+  "prTitle": "{{commitMessage}}",
+  "prBodyTemplate": "{{#if isMajor}}⚠️ **Major Update** — Review carefully for breaking changes.\n\n{{/if}}{{#if releaseNotesUrl}}## Release Notes\n{{releaseNotesUrl}}\n\n{{/if}}## Changes\n{{#each updates}}\n- {{#if isMajor}}🔴 **Major**{{else if isMinor}}🟡 **Minor**{{else}}🟢 **Patch**{{/if}}: `{{newVersion}}` {{#if isLocked}}(locked){{/if}}\n{{/if}}\n{{/each}}\n\n---\n*Configured by [Renovate](https://github.com/renovatebot/renovate)*",
+  "packageRules": [
+    {
+      "description": "Group all devDependencies together",
+      "matchDepTypes": ["devDependencies"],
+      "groupName": "devDependencies",
+      "groupSlug": "dev-deps"
+    },
+    {
+      "description": "Group all Storybook packages",
+      "matchPackagePatterns": ["@storybook/*", "storybook*"],
+      "groupName": "Storybook",
+      "groupSlug": "storybook"
+    },
+    {
+      "description": "Group all Radix UI packages",
+      "matchPackagePatterns": ["@radix-ui/*"],
+      "groupName": "Radix UI",
+      "groupSlug": "radix-ui"
+    },
+    {
+      "description": "Group all Tailwind CSS packages",
+      "matchPackagePatterns": ["tailwindcss*", "@tailwindcss/*"],
+      "groupName": "Tailwind CSS",
+      "groupSlug": "tailwind"
+    },
+    {
+      "description": "Group all Vitest packages",
+      "matchPackagePatterns": ["vitest*", "@vitest/*"],
+      "groupName": "Vitest",
+      "groupSlug": "vitest"
+    },
+    {
+      "description": "Group all ESLint/Prettier packages",
+      "matchPackagePatterns": ["eslint*", "prettier*", "@eslint/*", "eslint-plugin-*"],
+      "groupName": "Linting & Formatting",
+      "groupSlug": "lint-format"
+    },
+    {
+      "description": "Auto-merge patch updates for devDependencies",
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["patch"],
+      "automerge": true,
+      "automergeType": "pr"
+    },
+    {
+      "description": "Auto-merge minor updates for devDependencies",
+      "matchDepTypes": ["devDependencies"],
+      "matchUpdateTypes": ["minor"],
+      "automerge": true,
+      "automergeType": "pr"
+    },
+    {
+      "description": "Delay major updates for core packages",
+      "matchPackageNames": ["next", "react", "react-dom", "typescript"],
+      "matchUpdateTypes": ["major"],
+      "schedule": ["after 10pm on sunday"],
+      "automerge": false
+    },
+    {
+      "description": "Pin major versions for Storybook",
+      "matchPackagePatterns": ["@storybook/*", "storybook*"],
+      "matchUpdateTypes": ["major"],
+      "enabled": false
+    }
+  ],
+  "ignoreDeps": [],
+  "postUpdateOptions": ["npmDedupe"],
+  "lockFileMaintenance": {
+    "enabled": true,
+    "schedule": ["every weekend"],
+    "labels": ["renovate", "lockfile-maintenance"]
+  },
+  "prPriority": {
+    "enabled": true,
+    "priorityStrategy": "security"
+  }
+}

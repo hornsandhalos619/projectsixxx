@@ -1,0 +1,40 @@
+---
+slug: "agentic-bots-faq-1"
+serviceSlug: "agentic-bots"
+question: "How is this different from ChatGPT / Claude / custom GPTs?"
+answer: "Those are chat interfaces. We build autonomous agents with: persistent memory across sessions, tool access (APIs, databases, browsers), multi-step planning, self-verification loops, and orchestration across multiple specialized agents. A custom GPT answers. An agent *acts* — it researches, writes code, deploys, monitors, and reports back. You give it an outcome; it designs the path."
+confession: "90% of 'AI agents' on the market are prompt chains in a trench coat. Ours have architecture."
+order: 1
+---
+---
+slug: "agentic-bots-faq-2"
+serviceSlug: "agentic-bots"
+question: "What tasks can agents actually do reliably?"
+answer: "Research synthesis (100+ sources → memo), code generation (feature → PR), content production (brief → published), customer support (ticket → resolution), data analysis (raw → insight), monitoring (alert → diagnosis). Reliability depends on: task decomposability, tool reliability, eval rigor. We only deploy what we've stress-tested."
+confession: "We don't deploy agents for tasks we can't evaluate. That's the difference between a demo and a workforce."
+order: 2
+---
+---
+slug: "agentic-bots-faq-3"
+serviceSlug: "agentic-bots"
+question: "How do you handle hallucinations / errors?"
+answer: "Layered defense: 1) Structured output schemas (Zod) — invalid output rejected. 2) Self-critique loops — agent reviews own work. 3) Tool result verification — cross-reference sources. 4) Human gates for high-stakes actions. 5) Continuous eval harness — regression detection. We measure and publish error rates per agent type."
+confession: "Zero hallucination is a myth. Managed hallucination is engineering. We engineer it."
+order: 3
+---
+---
+slug: "agentic-bots-faq-4"
+serviceSlug: "agentic-bots"
+question: "What's the ongoing cost?"
+answer: "Acolyte: ~$200-500/mo LLM costs (usage-based). Adept: ~$1-3K/mo. Archmage: ~$5-15K/mo. We optimize prompts, cache aggressively, use smaller models for subtasks. Cost scales sub-linearly with output. ROI typically 10-100x vs human equivalent."
+confession: "The expensive part isn't the LLM calls. It's the engineering to make them reliable. That's what you pay us for."
+order: 4
+---
+---
+slug: "agentic-bots-faq-5"
+serviceSlug: "agentic-bots"
+question: "Can agents access our private data?"
+answer: "Yes, via secure patterns: RAG with vector DB (your data never leaves your VPC), API tools with scoped credentials, database read replicas with row-level security. We never train on your data. We sign NDAs. SOC2-compliant handling available at Archmage tier."
+confession: "Most 'AI companies' send your data to OpenAI. We build architectures where it never leaves your control."
+order: 5
+---
