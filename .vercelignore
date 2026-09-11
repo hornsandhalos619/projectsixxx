@@ -1,0 +1,12 @@
+.next
+node_modules
+.git
+.env
+.env.local
+.env*.local
+agent-tools
+coverage
+cypress
+storybook-static
+.turbo
+*.mdx.bak
