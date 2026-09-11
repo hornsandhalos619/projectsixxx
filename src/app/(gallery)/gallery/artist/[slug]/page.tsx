@@ -1,50 +1,16 @@
-import { Metadata } from 'next';
-import { notFound } from 'next/navigation';
-import { getArtist, getAllArtists } from '@/data/artists';
-import { ArtistProfile } from '@/components/gallery/ArtistProfile';
+import { notFound } from "next/navigation";
+import { getArtist } from "@/data/artists";
 
-interface ArtistPageProps {
-  params: Promise<{ slug: string }>;
-}
+export const dynamic = "force-dynamic";
 
-export async function generateMetadata({ params }: ArtistPageProps): Promise<Metadata> {
+export default async function ArtistPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
   const artist = getArtist(slug);
-  
-  if (!artist) {
-    return { title: 'Artist Not Found' };
-  }
-
-  return {
-    title: artist.name,
-    description: artist.bio.slice(0, 160),
-    openGraph: {
-      title: `${artist.name} — Summoned Artist`,
-      description: artist.bio.slice(0, 160),
-      type: 'profile',
-      images: [{ url: artist.avatar, width: 400, height: 400 }],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: artist.name,
-      description: artist.bio.slice(0, 160),
-      images: [artist.avatar],
-    },
-  };
-}
-
-export async function generateStaticParams() {
-  const artists = getAllArtists();
-  return artists.map((artist) => ({ slug: artist.slug }));
-}
-
-export default async function ArtistPage({ params }: ArtistPageProps) {
-  const { slug } = await params;
-  const artist = getArtist(slug);
-
-  if (!artist) {
-    notFound();
-  }
-
-  return <ArtistProfile artist={artist} />;
+  if (!artist) notFound();
+  return (
+    <div className="min-h-screen p-8 text-pallor-100">
+      <h1 className="font-display text-step-5">{artist.name}</h1>
+      <p className="mt-4 max-w-2xl font-body text-pallor-300">{artist.bio}</p>
+    </div>
+  );
 }
