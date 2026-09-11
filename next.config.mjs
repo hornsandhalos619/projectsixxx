@@ -30,7 +30,17 @@ const nextConfig = {
     ],
   },
   experimental: {
-    optimizePackageImports: ["lucide-react", "@radix-ui/react-icons"],
+    optimizePackageImports: [],
+  },
+  async redirects() {
+    return [
+      { source: "/shop/hnh", destination: "/shop?source=hnh", permanent: false },
+      { source: "/shop/spreadshirt", destination: "/shop?source=spreadshirt", permanent: false },
+      { source: "/shop/threadless", destination: "/shop?source=threadless", permanent: false },
+      { source: "/shop/etsy", destination: "/shop?source=etsy", permanent: false },
+      { source: "/shop/affiliates", destination: "/shop?source=affiliate", permanent: false },
+      { source: "/shop/affiliate", destination: "/shop?source=affiliate", permanent: false },
+    ];
   },
   async headers() {
     return [
