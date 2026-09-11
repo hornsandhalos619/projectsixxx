@@ -3,574 +3,188 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Project Sixxx</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700;900&family=Raleway:wght@300;400;600&display=swap" rel="stylesheet" />
+  <title>Project SiXXX — Horns &amp; Halos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@400;700;900&family=Cormorant+Garamond:ital,wght@0,500;1,500&family=UnifrakturMaguntia&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --black: #050505;
-      --deep: #0a0a0a;
-      --silver: #c0c0c0;
-      --silver-bright: #e8e8e8;
-      --red: #8b0000;
-      --red-bright: #c0392b;
-      --red-glow: #ff2222;
-      --gold-dim: #4a3a2a;
+      --void: #050505;
+      --bone: #e8dcc8;
+      --blood: #9a2a22;
+      --wine: #c4b08a;
+      --mute: rgba(232, 220, 200, 0.55);
     }
-
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-
     body {
-      background-color: var(--black);
-      color: var(--silver);
-      font-family: 'Raleway', sans-serif;
+      background: var(--void);
+      color: var(--bone);
+      font-family: "Cormorant Garamond", serif;
       overflow-x: hidden;
     }
-
-    body::before {
-      content: '';
-      position: fixed;
-      inset: 0;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");
-      pointer-events: none;
-      z-index: 0;
-      opacity: 0.4;
-    }
-
     nav {
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      z-index: 100;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1.2rem 3rem;
-      background: linear-gradient(to bottom, rgba(5,5,5,0.98), transparent);
-      border-bottom: 1px solid rgba(192,192,192,0.08);
+      position: fixed; inset: 0 0 auto 0; z-index: 20;
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 1.1rem 6vw;
+      background: linear-gradient(to bottom, rgba(5,5,5,.96), transparent);
+      border-bottom: 1px solid rgba(212,196,168,.12);
     }
-
-    .nav-logo {
-      font-family: 'Cinzel', serif;
-      font-size: 1.1rem;
-      font-weight: 900;
-      letter-spacing: 0.4em;
-      color: var(--silver-bright);
-      text-decoration: none;
-      text-transform: uppercase;
+    .logo {
+      font-family: "Cinzel Decorative", serif;
+      letter-spacing: .32em; text-transform: uppercase;
+      color: var(--bone); text-decoration: none; font-size: .85rem;
     }
-
-    .nav-logo span { color: var(--red-bright); }
-    nav ul { list-style: none; display: flex; gap: 2.5rem; }
-
-    nav ul a {
-      color: var(--silver);
-      text-decoration: none;
-      font-size: 0.75rem;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      font-weight: 600;
-      transition: color 0.3s;
-    }
-
-    nav ul a:hover { color: var(--red-bright); }
-
+    .logo span { color: #c0392b; }
+    nav ul { list-style: none; display: flex; gap: 1.6rem; flex-wrap: wrap; }
+    nav a { color: var(--mute); text-decoration: none; font-family: Cinzel, serif; font-size: .68rem; letter-spacing: .22em; text-transform: uppercase; }
+    nav a:hover { color: #c0392b; }
     .hero {
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      overflow: hidden;
+      min-height: 100svh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; text-align: center; padding: 7rem 1.5rem 4rem;
+      background:
+        radial-gradient(ellipse at 70% 40%, rgba(154,42,34,.18), transparent 50%),
+        linear-gradient(to right, #050505 18%, rgba(5,5,5,.55) 55%, transparent 80%);
     }
-
-    .hero-bg {
-      position: absolute;
-      inset: 0;
-      background-image: url('https://media.base44.com/images/public/69b3c3a8fec2973c70347805/a53a0fd87_generated_image.png');
-      background-size: cover;
-      background-position: center;
-      filter: brightness(0.35);
-      z-index: -1;
+    .kicker {
+      font-family: "UnifrakturMaguntia", serif; color: #c0392b; font-size: 1.35rem; margin-bottom: 1.2rem;
     }
-
-    .hero-bg::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to bottom, rgba(5,5,5,0.2) 0%, rgba(5,5,5,0.7) 70%, rgba(5,5,5,1) 100%);
+    .seal { width: min(280px, 70vw); height: auto; margin: 0 auto 1.5rem; }
+    h1 {
+      font-family: "Cinzel Decorative", serif; font-size: clamp(1.6rem, 6vw, 3.6rem);
+      letter-spacing: .42em; text-transform: uppercase; font-weight: 900;
     }
-
-    .hero-eyebrow {
-      font-size: 0.7rem;
-      letter-spacing: 0.6em;
-      text-transform: uppercase;
-      color: var(--red-bright);
-      margin-bottom: 1.5rem;
-      font-weight: 600;
-    }
-
-    .hero h1 {
-      font-family: 'Cinzel', serif;
-      font-size: clamp(3rem, 10vw, 8rem);
-      font-weight: 900;
-      line-height: 0.9;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      color: var(--silver-bright);
-      text-shadow: 0 0 60px rgba(139,0,0,0.4), 0 0 120px rgba(139,0,0,0.2);
-      margin-bottom: 0.2em;
-    }
-
-    .hero h1 .six {
-      color: var(--red-bright);
-      text-shadow: 0 0 30px rgba(192,57,43,0.8);
-    }
-
-    .hero-sub {
-      font-size: 0.85rem;
-      letter-spacing: 0.35em;
-      text-transform: uppercase;
-      color: var(--silver);
-      margin-top: 1.5rem;
-      margin-bottom: 2.5rem;
-      opacity: 0.7;
-    }
-
-    .divider {
-      width: 120px;
-      height: 1px;
-      background: linear-gradient(to right, transparent, var(--red-bright), transparent);
-      margin: 1.5rem auto;
-    }
-
+    .sub { margin: 1.2rem 0 2rem; letter-spacing: .28em; text-transform: uppercase; font-size: .8rem; color: var(--mute); font-family: Cinzel, serif; }
+    .rule { width: 140px; height: 1px; margin: 0 auto 1.4rem; background: linear-gradient(to right, transparent, #c0392b, transparent); }
+    .row { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
     .btn {
-      display: inline-block;
-      padding: 0.9rem 2.5rem;
-      font-family: 'Cinzel', serif;
-      font-size: 0.75rem;
-      letter-spacing: 0.3em;
-      text-transform: uppercase;
-      text-decoration: none;
-      border: 1px solid var(--red-bright);
-      color: var(--silver-bright);
-      background: transparent;
-      cursor: pointer;
-      transition: all 0.3s;
-      position: relative;
-      overflow: hidden;
+      display: inline-block; padding: .9rem 1.8rem; text-decoration: none;
+      font-family: Cinzel, serif; font-size: .72rem; letter-spacing: .28em; text-transform: uppercase;
+      border: 1px solid #c0392b; color: var(--bone);
     }
-
-    .btn::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: var(--red);
-      transform: scaleX(0);
-      transform-origin: left;
-      transition: transform 0.3s;
-      z-index: -1;
-    }
-
-    .btn:hover::before { transform: scaleX(1); }
-    .btn:hover { border-color: var(--red-bright); color: #fff; }
-    .btn-silver { border-color: var(--silver); }
-    .btn-silver::before { background: rgba(192,192,192,0.15); }
-
-    section {
-      position: relative;
-      z-index: 1;
-      padding: 6rem 2rem;
-      max-width: 1100px;
-      margin: 0 auto;
-    }
-
-    .section-label {
-      font-size: 0.65rem;
-      letter-spacing: 0.6em;
-      text-transform: uppercase;
-      color: var(--red-bright);
-      margin-bottom: 1rem;
-      display: block;
-    }
-
-    .section-title {
-      font-family: 'Cinzel', serif;
-      font-size: clamp(1.8rem, 4vw, 3rem);
-      font-weight: 700;
-      color: var(--silver-bright);
-      margin-bottom: 1rem;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .section-body {
-      color: rgba(192,192,192,0.65);
-      line-height: 1.8;
-      font-size: 0.95rem;
-      max-width: 600px;
-    }
-
-    .merch-section {
-      border-top: 1px solid rgba(192,192,192,0.08);
-      border-bottom: 1px solid rgba(192,192,192,0.08);
-      background: linear-gradient(135deg, rgba(139,0,0,0.05) 0%, transparent 60%);
-    }
-
-    .merch-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 3rem;
-      align-items: center;
-      margin-top: 3rem;
-    }
-
-    .merch-badge {
-      display: inline-block;
-      font-family: 'Cinzel', serif;
-      font-size: 2rem;
-      font-weight: 900;
-      color: var(--silver-bright);
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      line-height: 1.1;
-      margin-bottom: 1rem;
-    }
-
-    .merch-badge span { color: var(--red-bright); }
-
-    .merch-tagline {
-      font-size: 0.75rem;
-      letter-spacing: 0.4em;
-      text-transform: uppercase;
-      color: var(--silver);
-      opacity: 0.5;
-      margin-bottom: 2rem;
-    }
-
-    .merch-visual { display: flex; align-items: center; justify-content: center; }
-
-    .relic-box {
-      width: 280px;
-      height: 280px;
-      border: 1px solid rgba(192,192,192,0.15);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      background: radial-gradient(ellipse at center, rgba(139,0,0,0.1) 0%, transparent 70%);
-    }
-
-    .relic-box::before, .relic-box::after {
-      content: '';
-      position: absolute;
-      background: var(--red-bright);
-    }
-
-    .relic-box::before { width: 1px; height: 60%; top: 20%; left: 50%; }
-    .relic-box::after { width: 40%; height: 1px; top: 35%; left: 30%; }
-    .relic-symbol { font-size: 5rem; opacity: 0.15; color: var(--silver); }
-
-    .bot-cards {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 1.5rem;
-      margin-top: 3rem;
-    }
-
-    .bot-card {
-      border: 1px solid rgba(192,192,192,0.1);
-      padding: 2rem 1.5rem;
-      background: rgba(192,192,192,0.02);
-      transition: all 0.3s;
-      position: relative;
-      overflow: hidden;
-    }
-
-    .bot-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(to right, transparent, var(--red-bright), transparent);
-      transform: scaleX(0);
-      transition: transform 0.4s;
-    }
-
-    .bot-card:hover::before { transform: scaleX(1); }
-    .bot-card:hover { background: rgba(139,0,0,0.06); border-color: rgba(192,57,43,0.3); }
-
-    .card-icon { font-size: 1.8rem; margin-bottom: 1rem; }
-
-    .card-title {
-      font-family: 'Cinzel', serif;
-      font-size: 0.9rem;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--silver-bright);
-      margin-bottom: 0.8rem;
-    }
-
-    .card-body { font-size: 0.82rem; color: rgba(192,192,192,0.55); line-height: 1.7; }
-
-    /* Email opt-in */
-    .circle-section {
-      border-top: 1px solid rgba(192,192,192,0.08);
-      background: linear-gradient(180deg, rgba(139,0,0,0.04) 0%, transparent 100%);
-    }
-
-    .circle-form {
-      display: flex;
-      gap: 0;
-      max-width: 480px;
-      margin: 2.5rem auto 0;
-      border: 1px solid rgba(192,57,43,0.4);
-    }
-
-    .circle-form input {
-      flex: 1;
-      background: rgba(192,192,192,0.04);
-      border: none;
-      padding: 0.9rem 1.2rem;
-      font-family: 'Raleway', sans-serif;
-      font-size: 0.82rem;
-      color: var(--silver-bright);
-      outline: none;
-      letter-spacing: 0.05em;
-    }
-
-    .circle-form input::placeholder { color: rgba(192,192,192,0.3); }
-
-    .circle-form button {
-      background: var(--red);
-      border: none;
-      padding: 0.9rem 1.5rem;
-      font-family: 'Cinzel', serif;
-      font-size: 0.65rem;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      color: var(--silver-bright);
-      cursor: pointer;
-      transition: background 0.3s;
-      white-space: nowrap;
-    }
-
-    .circle-form button:hover { background: var(--red-bright); }
-
-    .circle-msg {
-      font-size: 0.75rem;
-      letter-spacing: 0.2em;
-      margin-top: 1rem;
-      text-align: center;
-      min-height: 1.2em;
-      color: rgba(192,192,192,0.5);
-    }
-
-    .circle-msg.success { color: var(--red-bright); }
-
-    footer {
-      border-top: 1px solid rgba(192,192,192,0.08);
-      text-align: center;
-      padding: 3rem 2rem;
-      position: relative;
-      z-index: 1;
-    }
-
-    .footer-logo {
-      font-family: 'Cinzel', serif;
-      font-size: 1.5rem;
-      font-weight: 900;
-      letter-spacing: 0.4em;
-      color: var(--silver-bright);
-      text-transform: uppercase;
-      margin-bottom: 1rem;
-    }
-
-    .footer-logo span { color: var(--red-bright); }
-
-    .footer-links {
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
-      margin: 1.5rem 0;
-      flex-wrap: wrap;
-    }
-
-    .footer-links a {
-      color: rgba(192,192,192,0.4);
-      text-decoration: none;
-      font-size: 0.7rem;
-      letter-spacing: 0.25em;
-      text-transform: uppercase;
-      transition: color 0.3s;
-    }
-
-    .footer-links a:hover { color: var(--red-bright); }
-    .footer-copy { font-size: 0.65rem; color: rgba(192,192,192,0.2); letter-spacing: 0.2em; }
-
-    .footer-inner-link {
-      display: inline-block;
-      margin-top: 1.5rem;
-      font-size: 0.55rem;
-      letter-spacing: 0.3em;
-      color: rgba(192,192,192,0.12);
-      text-decoration: none;
-      transition: color 0.4s;
-    }
-
-    .footer-inner-link:hover { color: rgba(192,192,192,0.35); }
-
-    @media (max-width: 768px) {
-      nav { padding: 1rem 1.5rem; }
-      nav ul { gap: 1.2rem; }
-      .merch-grid { grid-template-columns: 1fr; }
-      .merch-visual { display: none; }
-      .bot-cards { grid-template-columns: 1fr; }
-      .circle-form { flex-direction: column; }
+    .btn:hover { background: #6f1a18; }
+    .btn-ghost { border-color: rgba(232,220,200,.35); }
+    section { max-width: 1100px; margin: 0 auto; padding: 5.5rem 1.5rem; }
+    .label { font-family: "UnifrakturMaguntia", serif; color: #c0392b; font-size: 1.2rem; margin-bottom: .6rem; display: block; }
+    h2 { font-family: Cinzel, serif; letter-spacing: .08em; text-transform: uppercase; font-size: clamp(1.6rem, 4vw, 2.6rem); margin-bottom: 1rem; }
+    p.lede { max-width: 38rem; line-height: 1.75; color: var(--mute); font-size: 1.15rem; }
+    .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; margin-top: 2rem; }
+    .card { border: 1px solid rgba(212,196,168,.14); padding: 1.6rem; background: rgba(255,255,255,.02); }
+    .card h3 { font-family: Cinzel, serif; letter-spacing: .14em; text-transform: uppercase; font-size: .9rem; margin-bottom: .6rem; }
+    .merch { border-block: 1px solid rgba(212,196,168,.12); background: linear-gradient(135deg, rgba(154,42,34,.07), transparent 60%); }
+    form { display: flex; max-width: 480px; margin: 1.6rem auto 0; border: 1px solid rgba(192,57,43,.45); }
+    input { flex: 1; background: transparent; border: 0; padding: .9rem 1rem; color: var(--bone); font-family: inherit; }
+    button { background: #6f1a18; border: 0; color: var(--bone); padding: .9rem 1.2rem; font-family: Cinzel, serif; letter-spacing: .2em; text-transform: uppercase; font-size: .65rem; cursor: pointer; }
+    footer { text-align: center; padding: 3rem 1rem; border-top: 1px solid rgba(212,196,168,.12); }
+    footer a { color: var(--mute); text-decoration: none; margin: 0 .8rem; font-family: Cinzel, serif; font-size: .68rem; letter-spacing: .18em; text-transform: uppercase; }
+    .msg { min-height: 1.2em; margin-top: .8rem; font-size: .9rem; color: var(--mute); }
+    @media (max-width: 800px) {
+      nav ul { display: none; }
+      .grid { grid-template-columns: 1fr; }
+      form { flex-direction: column; }
     }
   </style>
 </head>
 <body>
-
   <nav>
-    <a href="#" class="nav-logo">Project <span>Sixxx</span></a>
+    <a class="logo" href="/">Project <span>SiXXX</span></a>
     <ul>
-      <li><a href="#merch">Merch</a></li>
+      <li><a href="/shop">Shop</a></li>
       <li><a href="#bots">Bots</a></li>
       <li><a href="#circle">Circle</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
   </nav>
 
-  <div class="hero">
-    <div class="hero-bg"></div>
-    <p class="hero-eyebrow">Est. in darkness</p>
-    <h1>Project<br><span class="six">Sixxx</span></h1>
-    <div class="divider"></div>
-    <p class="hero-sub">Art &nbsp;·&nbsp; Music &nbsp;·&nbsp; Technology</p>
-    <div style="display:flex; gap:1rem; flex-wrap:wrap; justify-content:center;">
-      <a href="#merch" class="btn">Enter the Store</a>
-      <a href="https://railway.com?referralCode=YeW39u" target="_blank" class="btn btn-silver">Deploy a Bot</a>
+  <header class="hero">
+    <p class="kicker">Est. in darkness</p>
+    <svg class="seal" viewBox="0 0 200 200" aria-label="Horned seal with a six">
+      <circle cx="100" cy="108" r="62" fill="none" stroke="#c4b08a" stroke-width="7"/>
+      <path d="M38 92 C34 40 78 28 100 58 C122 28 166 40 162 92" fill="none" stroke="#d4c4a8" stroke-width="8" stroke-linecap="round"/>
+      <text x="100" y="132" text-anchor="middle" font-family="Cinzel, serif" font-size="72" font-weight="900" fill="#c0392b">6</text>
+    </svg>
+    <h1>Project SiXXX</h1>
+    <div class="rule"></div>
+    <p class="sub">Art · Music · Technology</p>
+    <div class="row">
+      <a class="btn" href="/shop">Enter the Store</a>
+      <a class="btn btn-ghost" href="#bots">Deploy a Bot</a>
     </div>
-  </div>
+  </header>
 
-  <section id="merch" class="merch-section" style="max-width:100%; padding: 6rem 4rem;">
-    <div style="max-width:1100px; margin:0 auto;">
-      <span class="section-label">Official Merchandise</span>
-      <div class="merch-grid">
-        <div>
-          <div class="merch-badge">Horns<br>&amp; <span>Halos</span></div>
-          <p class="merch-tagline">Wearable Darkness &nbsp;·&nbsp; Limited Runs</p>
-          <p class="section-body" style="margin-bottom:2rem;">
-            Dark satanic artwork, heavy apparel, and relics for the refined collector. Each piece is a statement. Not for the casual — for the devoted.
-          </p>
-          <a href="https://hornsandhalos.myspreadshop.com" target="_blank" class="btn">Shop Horns &amp; Halos</a>
-        </div>
-        <div class="merch-visual">
-          <div class="relic-box">
-            <span class="relic-symbol">&#10013;</span>
-          </div>
-        </div>
-      </div>
+  <section id="merch" class="merch">
+    <span class="label">Official Merchandise</span>
+    <h2>Horns &amp; Halos</h2>
+    <p class="merch-tag" style="letter-spacing:.32em;text-transform:uppercase;font-family:Cinzel,serif;font-size:.75rem;color:var(--mute);margin-bottom:1rem;">Wearable Darkness · Limited Runs</p>
+    <p class="lede">Dark artwork, heavy apparel, and relics for the devoted. Shop Horns &amp; Halos in the house bazaar — not a stray product page, not a 404.</p>
+    <div class="row" style="justify-content:flex-start;margin-top:1.8rem;">
+      <a class="btn" href="/shop">Shop Horns &amp; Halos</a>
+      <a class="btn btn-ghost" href="/shop">Enter the Bazaar</a>
     </div>
   </section>
 
   <section id="bots">
-    <span class="section-label">AI Technology</span>
-    <h2 class="section-title">Deploy Your Bot</h2>
-    <p class="section-body">
-      No code. No servers. No headaches. Deploy your own AI-powered bot to Telegram, Discord, and beyond — in minutes. Powered by the same dark intelligence behind Project Sixxx.
-    </p>
-    <div class="bot-cards">
-      <div class="bot-card">
-        <div class="card-icon">&#9889;</div>
-        <div class="card-title">Instant Deploy</div>
-        <p class="card-body">Your bot goes live in under 3 minutes. No technical knowledge required.</p>
-      </div>
-      <div class="bot-card">
-        <div class="card-icon">&#129302;</div>
-        <div class="card-title">AI Powered</div>
-        <p class="card-body">Backed by cutting-edge language models. Your bot thinks, responds, and learns.</p>
-      </div>
-      <div class="bot-card">
-        <div class="card-icon">&#128279;</div>
-        <div class="card-title">Multi Platform</div>
-        <p class="card-body">Telegram, Discord, and more. One bot, everywhere your audience lives.</p>
-      </div>
+    <span class="label">AI Technology</span>
+    <h2>Deploy Your Bot</h2>
+    <p class="lede">No code. No servers. No headaches. Deploy an AI-powered bot to Telegram, Discord, and beyond — in minutes. Powered by the same dark intelligence behind Project SiXXX.</p>
+    <div class="grid">
+      <article class="card"><h3>Instant Deploy</h3><p>Your bot goes live in under 3 minutes.</p></article>
+      <article class="card"><h3>AI Powered</h3><p>Overmind thinks, responds, and learns.</p></article>
+      <article class="card"><h3>Multi Platform</h3><p>Telegram, Discord, and wherever the coven gathers.</p></article>
     </div>
-    <div style="margin-top:3rem;">
-      <a href="https://railway.com?referralCode=YeW39u" target="_blank" class="btn">Deploy on Railway</a>
+    <div class="row" style="justify-content:flex-start;margin-top:2rem;">
+      <a class="btn" href="https://railway.com?referralCode=YeW39u" target="_blank" rel="noopener">Deploy on Railway</a>
     </div>
   </section>
 
-  <section id="circle" class="circle-section" style="text-align:center; max-width:100%; padding: 6rem 2rem;">
-    <div style="max-width:1100px; margin:0 auto;">
-      <span class="section-label">Inner Circle</span>
-      <h2 class="section-title">Join the Circle</h2>
-      <p class="section-body" style="margin: 0 auto 0.5rem;">
-        First access to drops, exclusive content, and transmissions from the dark. No spam. Just signal.
-      </p>
-      <div class="circle-form">
-        <input type="email" id="circleEmail" placeholder="your@email.com" />
-        <button onclick="joinCircle()">Enter</button>
-      </div>
-      <p class="circle-msg" id="circleMsg"></p>
-    </div>
+  <section id="circle" style="text-align:center;">
+    <span class="label">Inner Circle</span>
+    <h2>Join the Circle</h2>
+    <p class="lede" style="margin:0 auto;">First access to drops, exclusive content, and transmissions from the dark. No spam. Just signal.</p>
+    <form onsubmit="joinCircle(event)">
+      <input type="email" id="circleEmail" placeholder="your@email.com" required />
+      <button type="submit">Enter</button>
+    </form>
+    <p class="msg" id="circleMsg"></p>
   </section>
 
-  <section id="contact" style="text-align:center; border-top: 1px solid rgba(192,192,192,0.08);">
-    <span class="section-label">Connect</span>
-    <h2 class="section-title">Enter the Circle</h2>
-    <p class="section-body" style="margin: 0 auto 2.5rem;">
-      For collaborations, licensing, or to be first in line for the bot platform launch — reach out.
-    </p>
-    <a href="mailto:contact@projectsixxx.com" class="btn">contact@projectsixxx.com</a>
+  <section id="contact" style="text-align:center;">
+    <span class="label">Connect</span>
+    <h2>Enter the Circle</h2>
+    <p class="lede" style="margin:0 auto 1.6rem;">For collaborations, licensing, or the bot platform — reach out.</p>
+    <a class="btn" href="mailto:contact@projectsixxx.com">contact@projectsixxx.com</a>
   </section>
 
   <footer>
-    <div class="footer-logo">Project <span>Sixxx</span></div>
-    <div class="footer-links">
-      <a href="https://hornsandhalos.myspreadshop.com" target="_blank">Horns &amp; Halos</a>
-      <a href="https://railway.com?referralCode=YeW39u" target="_blank">Bot Platform</a>
+    <p style="font-family:'Cinzel Decorative',serif;letter-spacing:.28em;text-transform:uppercase;margin-bottom:1rem;">Project SiXXX</p>
+    <p>
+      <a href="/shop">Horns &amp; Halos</a>
+      <a href="https://railway.com?referralCode=YeW39u" target="_blank" rel="noopener">Bot Platform</a>
       <a href="#circle">Join the Circle</a>
       <a href="#contact">Contact</a>
-    </div>
-    <p class="footer-copy">&copy; 2026 Project Sixxx &nbsp;·&nbsp; Horns &amp; Halos LLC &nbsp;·&nbsp; All rights reserved</p>
-    <a href="https://project-sixxx-teamflow.base44.app" target="_blank" class="footer-inner-link">&#9670;</a>
+    </p>
+    <p style="margin-top:1.2rem;color:rgba(232,220,200,.25);font-size:.8rem;">© 2026 Project SiXXX · Horns &amp; Halos LLC</p>
   </footer>
-
   <script>
-    async function joinCircle() {
-      const email = document.getElementById('circleEmail').value.trim();
-      const msg = document.getElementById('circleMsg');
-      if (!email || !email.includes('@')) {
-        msg.textContent = 'Enter a valid email to proceed.';
-        msg.className = 'circle-msg';
-        return;
-      }
-      msg.textContent = '...';
-      msg.className = 'circle-msg';
+    async function joinCircle(event) {
+      event.preventDefault();
+      const email = document.getElementById("circleEmail").value.trim();
+      const msg = document.getElementById("circleMsg");
+      if (!email.includes("@")) { msg.textContent = "Enter a valid email to proceed."; return; }
+      msg.textContent = "Sealing…";
       try {
-        const res = await fetch('https://4-70347805.base44.app/functions/subscribeEmail', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+        const res = await fetch("https://4-70347805.base44.app/functions/subscribeEmail", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ email })
         });
         const data = await res.json();
-        msg.textContent = data.message || 'Welcome to the circle.';
-        msg.className = 'circle-msg success';
-        document.getElementById('circleEmail').value = '';
+        msg.textContent = data.message || "Welcome to the circle.";
+        document.getElementById("circleEmail").value = "";
       } catch (e) {
-        msg.textContent = 'Something went wrong. Try again.';
-        msg.className = 'circle-msg';
+        msg.textContent = "Something went wrong. Try again.";
       }
     }
-
-    document.getElementById('circleEmail').addEventListener('keydown', function(e) {
-      if (e.key === 'Enter') joinCircle();
-    });
   </script>
-
 </body>
 </html>
