@@ -1,19 +1,18 @@
-import fs from 'fs';
-import path from 'path';
-import matter from 'gray-matter';
+import fs from "fs";
+import path from "path";
+import matter from "gray-matter";
 
-const contentDir = path.join(process.cwd(), 'src/content');
+const contentDir = path.join(process.cwd(), "src/content");
 
-function getAllFiles(dir: string, fileTypes: string[] = ['.mdx', '.md']): string[] {
+function getAllFiles(dir: string, fileTypes: string[] = [".mdx", ".md"]): string[] {
   const files: string[] = [];
   if (!fs.existsSync(dir)) return files;
-  
   for (const file of fs.readdirSync(dir)) {
     const fullPath = path.join(dir, file);
     const stat = fs.statSync(fullPath);
     if (stat.isDirectory()) {
       files.push(...getAllFiles(fullPath, fileTypes));
-    } else if (fileTypes.some(ext => file.endsWith(ext))) {
+    } else if (fileTypes.some((ext) => file.endsWith(ext))) {
       files.push(fullPath);
     }
   }
@@ -21,49 +20,51 @@ function getAllFiles(dir: string, fileTypes: string[] = ['.mdx', '.md']): string
 }
 
 function parseFile(filePath: string) {
-  const content = fs.readFileSync(filePath, 'utf-8');
+  const content = fs.readFileSync(filePath, "utf-8");
   const { data, content: body } = matter(content);
   const relativePath = path.relative(contentDir, filePath);
-  const slug = relativePath.replace(/\.mdx?$/, '').replace(/\\/g, '/');
+  const slug = relativePath
+    .replace(/\.mdx?$/, "")
+    .replace(/\\/g, "/")
+    .replace(/^(journal|services|case-studies|faqs)\//, "");
   return { ...data, slug, body, _raw: content };
 }
 
 export function getAllServices() {
-  const files = getAllFiles(path.join(contentDir, 'services'));
-  return files.map(parseFile).sort((a, b) => (a.order || 0) - (b.order || 0));
+  return getAllFiles(path.join(contentDir, "services"))
+    .map(parseFile)
+    .sort((a, b) => (a.order || 0) - (b.order || 0));
 }
 
 export function getService(slug: string) {
-  const services = getAllServices();
-  return services.find(s => s.slug === slug);
+  return getAllServices().find((s) => s.slug === slug || s.slug.endsWith(`/${slug}`));
 }
 
 export function getAllCaseStudies() {
-  const files = getAllFiles(path.join(contentDir, 'case-studies'));
-  return files.map(parseFile).sort((a, b) => (a.order || 0) - (b.order || 0));
+  return getAllFiles(path.join(contentDir, "case-studies"))
+    .map(parseFile)
+    .sort((a, b) => (a.order || 0) - (b.order || 0));
 }
 
 export function getCaseStudiesForService(serviceSlug: string) {
-  const caseStudies = getAllCaseStudies();
-  return caseStudies.filter(cs => cs.serviceSlug === serviceSlug);
+  return getAllCaseStudies().filter((cs) => cs.serviceSlug === serviceSlug);
 }
 
 export function getAllFAQs() {
-  const files = getAllFiles(path.join(contentDir, 'faqs'));
-  return files.map(parseFile).sort((a, b) => (a.order || 0) - (b.order || 0));
+  return getAllFiles(path.join(contentDir, "faqs"))
+    .map(parseFile)
+    .sort((a, b) => (a.order || 0) - (b.order || 0));
 }
 
 export function getFAQsForService(serviceSlug: string) {
-  const faqs = getAllFAQs();
-  return faqs.filter(f => f.serviceSlug === serviceSlug);
+  return getAllFAQs().filter((f) => f.serviceSlug === serviceSlug);
 }
 
-// Journal functions
 export interface JournalArticle {
   slug: string;
   title: string;
   excerpt: string;
-  type: 'essay' | 'ritual' | 'confession' | 'summoning';
+  type: "essay" | "ritual" | "confession" | "summoning";
   author: string;
   authorRole?: string;
   tags?: string[];
@@ -82,31 +83,45 @@ export interface JournalArticle {
 }
 
 export function getAllJournalArticles(): JournalArticle[] {
-  const files = getAllFiles(path.join(contentDir, 'journal'));
-  return files
-    .map(parseFile)
+  return getAllFiles(path.join(contentDir, "journal"))
+    .map((filePath) => {
+      const parsed = parseFile(filePath) as JournalArticle;
+      const slug = String(parsed.slug || "").replace(/^journal\//, "");
+      return {
+        ...parsed,
+        slug,
+        url: `/journal/${slug}`,
+        typeLabel: parsed.typeLabel || String(parsed.type || "essay"),
+        featured: Boolean(parsed.featured),
+        readTime: parsed.readTime || 6,
+      };
+    })
     .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime());
 }
 
-export function getJournalArticle(slug: string): JournalArticle | undefined {
-  const articles = getAllJournalArticles();
-  return articles.find(a => a.slug === slug);
+export function getJournalArticle(slug: string) {
+  return getAllJournalArticles().find((a) => a.slug === slug);
 }
 
-export function getJournalArticlesByType(type: JournalArticle['type']): JournalArticle[] {
-  const articles = getAllJournalArticles();
-  return articles.filter(a => a.type === type);
+export function getJournalArticlesByType(type: JournalArticle["type"]) {
+  return getAllJournalArticles().filter((a) => a.type === type);
 }
 
-export function getFeaturedJournalArticles(): JournalArticle[] {
-  const articles = getAllJournalArticles();
-  return articles.filter(a => a.featured);
+export function getJournalArticlesByTag(tag: string) {
+  const needle = tag.toLowerCase();
+  return getAllJournalArticles().filter((article) =>
+    (article.tags || []).some((entry) => entry.toLowerCase() === needle)
+  );
+}
+
+export function getFeaturedJournalArticles() {
+  return getAllJournalArticles().filter((a) => a.featured);
 }
 
 export function getJournalArticlesForStaticParams() {
-  return getAllJournalArticles().map(a => ({ slug: a.slug }));
+  return getAllJournalArticles().map((a) => ({ slug: a.slug }));
 }
 
 export function generateStaticParams() {
-  return getAllServices().map(s => ({ slug: s.slug }));
+  return getAllServices().map((s) => ({ slug: s.slug }));
 }
