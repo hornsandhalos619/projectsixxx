@@ -3,21 +3,26 @@ import { notFound } from "next/navigation";
 import Link from "next/link";
 import { ProductImageGallery, ProductInfo } from "@/components/shop/ProductDetailClient";
 import { getUnifiedProduct } from "@/lib/unified-shop";
+import { getHouseCatalog } from "@/lib/house-catalog";
 
 interface ProductPageProps {
   params: Promise<{ slug: string }>;
 }
 
+async function findProduct(slug: string) {
+  return (await getUnifiedProduct(slug)) || getHouseCatalog().find((p) => p.handle === slug) || null;
+}
+
 export async function generateMetadata({ params }: ProductPageProps): Promise<Metadata> {
   const { slug } = await params;
-  const product = await getUnifiedProduct(slug);
+  const product = await findProduct(slug);
   if (!product) return { title: "Ritual Not Found" };
   return { title: product.title, description: (product.description || product.title).slice(0, 160) };
 }
 
 export default async function ProductPage({ params }: ProductPageProps) {
   const { slug } = await params;
-  const product = await getUnifiedProduct(slug);
+  const product = await findProduct(slug);
   if (!product) notFound();
   return (
     <div className="min-h-screen bg-void-900 text-text-primary">
