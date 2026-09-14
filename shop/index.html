@@ -13,8 +13,10 @@
 .primary-nav{position:relative;display:flex;align-items:center;justify-content:flex-end;gap:.75rem;min-width:0}
 .nav--chrome{display:flex;align-items:center;flex-wrap:wrap;gap:.85rem 1.25rem}
 .nav--chrome a:hover{color:var(--bone)}
-.nav-trigger{display:inline-flex;align-items:center;justify-content:center;padding:.45rem .85rem;font-family:var(--font-ui);font-size:var(--label);font-weight:500;letter-spacing:var(--track-label);text-transform:uppercase;color:var(--ash);border:1px solid var(--hairline);background:color-mix(in srgb,var(--obsidian) 70%,transparent);box-shadow:inset 0 1px 0 color-mix(in srgb,var(--bone) 8%,transparent);cursor:pointer;transition:color var(--t-fast) var(--ease-out),border-color var(--t-fast) var(--ease-out),background-color var(--t-fast) var(--ease-out)}
+.nav-trigger{display:none;align-items:center;justify-content:center;padding:.45rem .85rem;font-family:var(--font-ui);font-size:var(--label);font-weight:500;letter-spacing:var(--track-label);text-transform:uppercase;color:var(--ash);border:1px solid var(--hairline);background:color-mix(in srgb,var(--obsidian) 70%,transparent);box-shadow:inset 0 1px 0 color-mix(in srgb,var(--bone) 8%,transparent);cursor:pointer;transition:color var(--t-fast) var(--ease-out),border-color var(--t-fast) var(--ease-out),background-color var(--t-fast) var(--ease-out)}
 .nav-trigger:hover,.nav-trigger[aria-expanded="true"]{color:var(--bone);border-color:color-mix(in srgb,var(--crimson) 55%,var(--hairline))}
+.nav-backdrop{display:none;position:fixed;inset:0;z-index:45;margin:0;padding:0;border:0;background:rgba(5,5,5,.55);cursor:pointer;-webkit-appearance:none;appearance:none}
+.nav-backdrop.is-open{display:block}
 .nav-parchment{position:absolute;top:calc(100% + .55rem);right:0;left:auto;z-index:30;width:max-content;min-width:16rem;max-width:min(22rem,calc(100vw - 1.5rem));box-sizing:border-box;padding:0;max-height:0;opacity:0;overflow:hidden;pointer-events:none;transform:translateY(-6px);background:rgba(232,226,214,.92);color:var(--obsidian);border:1px solid color-mix(in srgb,var(--crimson) 45%,var(--silver));box-shadow:inset 0 1px 0 color-mix(in srgb,var(--bone) 35%,transparent),0 12px 28px color-mix(in srgb,var(--void) 55%,transparent);transition:max-height 400ms var(--ease-out),opacity 400ms var(--ease-out),transform 400ms var(--ease-out),padding 400ms var(--ease-out)}
 .nav-parchment.is-open{max-height:28rem;opacity:1;pointer-events:auto;transform:translateY(0);padding:1.15rem 1.2rem 1.25rem}
 .nav-parchment::before,.nav-parchment::after,.nav-parchment__filigree::before,.nav-parchment__filigree::after{content:"";position:absolute;width:1.65rem;height:1.65rem;pointer-events:none;border-style:solid;border-color:color-mix(in srgb,var(--crimson) 55%,var(--silver));opacity:.9;z-index:1}
@@ -30,7 +32,8 @@
 .nav-parchment__list a:hover::before,.nav-parchment__list a:focus-visible::before{background:var(--crimson)}
 .nav-parchment__list a[aria-current="page"]{color:var(--ink);box-shadow:inset 0 -1px 0 color-mix(in srgb,var(--crimson) 55%,transparent)}
 .nav-parchment__list a[aria-current="page"]::before{background:var(--crimson)}
-@media (max-width:800px){.nav--chrome{display:none}.nav-trigger{display:inline-flex}.primary-nav{justify-content:flex-end}.nav-parchment{position:fixed;top:4.35rem;left:12px;right:12px;width:auto;min-width:0;max-width:none;margin:0;box-sizing:border-box;z-index:40;transform:translateY(-6px)}.nav-parchment.is-open{padding:1.15rem max(1rem,16px) 1.25rem;transform:translateY(0)}.nav-parchment__list a{white-space:normal}}
+@media (max-width:800px){.nav--chrome{display:none}.nav-trigger{display:inline-flex}.primary-nav{justify-content:flex-end}.nav-parchment{position:fixed;top:4.35rem;left:16px;right:16px;width:auto;min-width:0;max-width:none;margin:0;box-sizing:border-box;z-index:50;transform:translateY(-6px)}.nav-parchment.is-open{padding:1.15rem max(1rem,16px) 1.25rem;transform:translateY(0)}.nav-parchment__list a{white-space:normal}}
+@media (min-width:801px){.nav-trigger,.nav-parchment,.nav-backdrop{display:none!important}}
 main{max-width:720px;margin:0 auto;padding:4.5rem 1.4rem 5rem;text-align:center}.kicker{font-family:var(--font-ui);font-size:.68rem;letter-spacing:.28em;text-transform:uppercase;color:var(--gold)}h1{font-weight:600;font-size:clamp(2rem,5vw,3rem);letter-spacing:.05em;margin:1rem 0 1.2rem}p{color:var(--mute);font-size:1.15rem;max-width:34rem;margin:0 auto 1.2rem;line-height:1.6}.price{font-family:var(--font-ui);color:var(--bone);letter-spacing:.12em;text-transform:uppercase;font-size:.85rem;margin:1.5rem 0}.btn{display:inline-block;margin:.35rem;padding:.9rem 1.5rem;border:1px solid var(--crimson);color:var(--bone);font-family:var(--font-ui);font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;background:rgba(155,28,28,.28)}.btn:hover{background:rgba(155,28,28,.45)}.btn.ghost{background:transparent;border-color:var(--line)}.seal{width:64px;height:auto;margin:1.2rem auto;display:block;opacity:.9}
 </style>
 </head>
@@ -44,8 +47,6 @@ main{max-width:720px;margin:0 auto;padding:4.5rem 1.4rem 5rem;text-align:center}
 <a href="https://hornshalosshop.myshopify.com/" rel="noopener">Shopify</a>
 </div>
 <button type="button" class="nav-trigger" id="nav-trigger" aria-expanded="false" aria-controls="nav-parchment-panel">Menu</button>
-</nav>
-</header>
 <div class="nav-parchment" id="nav-parchment-panel" aria-hidden="true">
 <span class="nav-parchment__filigree" aria-hidden="true"></span>
 <ul class="nav-parchment__list">
@@ -54,6 +55,9 @@ main{max-width:720px;margin:0 auto;padding:4.5rem 1.4rem 5rem;text-align:center}
 <li><a href="https://hornshalosshop.myshopify.com/" rel="noopener">Shopify</a></li>
 </ul>
 </div>
+</nav>
+</header>
+<button type="button" class="nav-backdrop" id="nav-backdrop" aria-hidden="true" tabindex="-1"></button>
 <main>
 <p class="kicker">The house shop</p>
 <img class="seal" src="../assets/wax-seal-6.svg" width="180" height="180" alt="Wax seal 6"/>
@@ -63,6 +67,6 @@ main{max-width:720px;margin:0 auto;padding:4.5rem 1.4rem 5rem;text-align:center}
 <a class="btn" href="https://hornshalosshop.myshopify.com/" rel="noopener">Open Shopify</a>
 <a class="btn ghost" href="../">Return home</a>
 </main>
-<script>(function(){var root=document.getElementById("primary-nav"),trigger=document.getElementById("nav-trigger"),panel=document.getElementById("nav-parchment-panel");if(!root||!trigger||!panel)return;document.body.appendChild(panel);function setOpen(o){panel.classList.toggle("is-open",o);panel.setAttribute("aria-hidden",o?"false":"true");trigger.setAttribute("aria-expanded",o?"true":"false");trigger.textContent=o?"Close":"Menu"}function close(){setOpen(false)}trigger.addEventListener("click",function(){setOpen(!panel.classList.contains("is-open"))});document.addEventListener("keydown",function(e){if(e.key==="Escape")close()});document.addEventListener("pointerdown",function(e){var t=e.target;if(!(t instanceof Node))return;if(root.contains(t)||panel.contains(t))return;close()});panel.querySelectorAll("a").forEach(function(a){a.addEventListener("click",close)})})();</script>
+<script>(function(){var root=document.getElementById("primary-nav"),trigger=document.getElementById("nav-trigger"),panel=document.getElementById("nav-parchment-panel"),header=document.querySelector("header.chrome"),mq=window.matchMedia("(max-width:800px)");if(!root||!trigger||!panel)return;var backdrop=document.getElementById("nav-backdrop");if(!backdrop){backdrop=document.createElement("button");backdrop.type="button";backdrop.className="nav-backdrop";backdrop.id="nav-backdrop";backdrop.setAttribute("aria-hidden","true");backdrop.tabIndex=-1;document.body.appendChild(backdrop)}function isMobile(){return mq.matches}function syncTop(){if(isMobile()&&header){panel.style.top=(header.getBoundingClientRect().bottom+8)+"px"}else{panel.style.removeProperty("top")}}function placePanel(){if(isMobile()){if(panel.parentNode!==document.body)document.body.appendChild(panel);syncTop()}else{syncTop();if(panel.parentNode!==root)root.appendChild(panel);setOpen(false)}}function setOpen(o){panel.classList.toggle("is-open",!!o);panel.setAttribute("aria-hidden",o?"false":"true");trigger.setAttribute("aria-expanded",o?"true":"false");trigger.textContent=o?"Close":"Menu";var showBack=!!(o&&isMobile());backdrop.classList.toggle("is-open",showBack);backdrop.setAttribute("aria-hidden",showBack?"false":"true");if(showBack)syncTop()}function close(){setOpen(false)}placePanel();if(mq.addEventListener){mq.addEventListener("change",placePanel)}else if(mq.addListener){mq.addListener(placePanel)}window.addEventListener("resize",function(){if(isMobile()){syncTop();if(panel.parentNode!==document.body)document.body.appendChild(panel)}else{placePanel()}});trigger.addEventListener("click",function(){setOpen(!panel.classList.contains("is-open"))});backdrop.addEventListener("click",close);document.addEventListener("keydown",function(e){if(e.key==="Escape")close()});document.addEventListener("pointerdown",function(e){var t=e.target;if(!(t instanceof Node))return;if(root.contains(t)||panel.contains(t)||backdrop===t||backdrop.contains(t))return;close()});panel.querySelectorAll("a").forEach(function(a){a.addEventListener("click",close)})})();</script>
 </body>
 </html>
