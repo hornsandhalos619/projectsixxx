@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Project SiXXX mark">
+  <circle cx="100" cy="100" r="78" fill="none" stroke="#e8dcc8" stroke-width="3"/>
+  <circle cx="100" cy="100" r="62" fill="none" stroke="#c9a96e" stroke-width="1.2" opacity=".55"/>
+  <path d="M55 95 C55 40,100 28,100 28 C100 28,145 40,145 95 L130 150 C120 170,80 170,70 150 Z" fill="#0a0a0a" stroke="#e8dcc8" stroke-width="2"/>
+  <path d="M100 48 L108 95 L100 140 L92 95 Z" fill="#9b1c1c"/>
+  <path d="M72 70 L78 110" stroke="#9b1c1c" stroke-width="2"/>
+  <path d="M128 70 L122 110" stroke="#9b1c1c" stroke-width="2"/>
+</svg>
