@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 240" role="img" aria-label="Horns obsidian glass">
+  <defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#1a1512"/><stop offset="100%" stop-color="#050505"/></linearGradient></defs>
+  <rect width="400" height="240" fill="url(#g)"/>
+  <path d="M80 160 C90 60,200 40,200 40 C200 40,310 60,320 160 L280 200 C250 220,150 220,120 200 Z" fill="#0d0b0a" stroke="#e8dcc8" stroke-width="2" opacity=".9"/>
+  <path d="M200 55 L215 130 L200 190 L185 130 Z" fill="#9b1c1c" opacity=".85"/>
+</svg>
